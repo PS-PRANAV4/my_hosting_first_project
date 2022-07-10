@@ -22,6 +22,9 @@ def order_payment(request,id,check):
         cart_products = CartProduct.objects.get(id = cart_id)
         offer = cart_products.product.offer
         amount = cart_products.product.price - offer
+        request.session['check']  = check
+        user_o = Accounts.objects.get(id=id)
+        request.session['user']  = user_o.id
     else:
         request.session['check']  = check
         user =request.user
