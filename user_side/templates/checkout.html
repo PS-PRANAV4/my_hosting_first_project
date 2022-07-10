@@ -1,0 +1,411 @@
+
+{% extends 'navbar.html' %}
+
+
+{% block content %}
+{% load static %}
+{% load mathfilters %}
+<!-- Page Preloder -->
+
+<style>
+/**
+  Default Markup
+**/
+
+
+  <!-- .containers {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  
+  /**
+    Component
+  **/
+  
+  label {
+      width: 100%;
+  }
+  
+  .card-input-element {
+      display: none;
+  }
+  
+  .card-input {
+      margin: 10px;
+      padding: 0px;
+  }
+  
+  .card-input:hover {
+      cursor: pointer;
+  }
+  
+  .card-input-element:checked + .card-input {
+       box-shadow: 0 0 1px 1px #2ecc71;
+  }
+  
+  
+
+
+
+</style> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+   
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option pt-7">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Check Out</h4>
+                        <div class="breadcrumb__links">
+                            <a href="/">Home</a>
+                            <a href="/">Shop</a>
+                            <a href="/cart/{{user.id}}">Cart</a>
+                            <span>Check Out</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
+                            <div class="d-flex flex-column">
+                            <p> have a copon code </p>
+                            <input type="text" style="height:50%; width: 50%;   background-color: aqua;" name="coup" id="coup"  >
+                            <button type="submit" class="btn btn-success mt-1" id="coupon" style="height: 10% ; width: 50%;" >SUBMIT</button>
+                        </div>
+                            <form action="/check/{{user.id}}" method="POST">
+                                {% csrf_token %}
+                            
+                            
+                            
+                                <div class="containers">
+  
+                                   
+                                    
+                                    <div class="row">
+                                      {% for pro in profile  %}
+                                        <div class="col-md-4 col-lg-4 col-sm-4">
+                                          
+                                          <label>
+                                            <input type="radio" value="{{pro.id}}" name="check" selected checked class="card-input-element" />
+                                  
+                                              <div class="card card-default card-input">
+                                                <div class="card-header">{{pro.first_name}} {{pro.last_name}}</div>
+                                                <div class="card-body">
+                                                  {{pro.address}}
+                                                  {{pro.country_name}}
+                                                  {{pro.state}}
+                                                  {{pro.post_code}}
+                                                  {{pro.phone_number}}
+                                                  {{pro.email}}
+                                                  
+                                                </div>
+                                                
+                                              </div>
+                                  
+                                          </label>
+                                          
+                                        </div>
+                                        {% endfor %}
+                                       
+                                    </div>
+                                    
+                                  </div>
+                            
+                            
+                            
+                            
+                                  
+                              
+                          
+                           
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products">Product <span>Total</span></div>
+                                <ul class="checkout__total__products">
+                                    {% if cartproduct %}
+                                    <li>{{forloop.counter}} .   {{cartproduct.product.name}} <span>₹{{cartproduct.total_amount}} </span></li>
+                                    {% endif %}
+                                    {% for cartproduct in cartproduc %}
+                                    <li>{{forloop.counter}} .   {{cartproduct.product.name}} <span>₹{{cartproduct.total_amount}} </span></li>
+                                    {% endfor %}
+                                </ul>
+                                <ul class="checkout__total__all">
+                                    {% if cart.grand_total  %}
+                                    <li>Total <span>₹{{cart.grand_total}}</span></li>
+                                    {% else %}
+                                    <li>Total <span>₹{{cartproduct.total_amount|add:offer}}</span></li>
+                                    {% endif %}
+                                    <li>product offers <span>₹{{offer}}</span></li>
+                                    <hr style="color: blue;" >
+                                    {% if cart.grand_total %}
+                                    <li>GRAND TOTAL<span id="va" >₹{{cart.grand_total|sub:offer}}</span></li>
+                                    {% else %}
+                                    <li>GRAND TOTAL<span id="va" >₹{{cartproduct.total_amount}}</span></li> 
+                                    {% endif %}
+                                </ul>
+                               
+                                <div id="message" style="text-transform: uppercase;"   class="text-danger"></div>
+                                <button type="submit"  id="place" class="site-btn">PLACE ORDER</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                
+            </div>
+        </div>
+    </section>
+    <!-- Checkout Section End -->
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                
+              
+               
+                
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                            aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+    <!-- form validation below -->
+    <!-- <script>
+        element = document.getElementById('place')
+      
+        element.addEventListener("click", valida);
+        function valida(e)
+        {   
+            
+            
+              if(  document.getElementById("non").checked == true)
+              {
+                    name = document.getElementById("name").value
+                    lname = document.getElementById("lname").value
+                    country = document.getElementById("country").value
+                    address1 = document.getElementById("address1").value
+                    address2 = document.getElementById("address2").value
+                    town = document.getElementById("town").value
+                    city = document.getElementById("city").value
+                    pin = document.getElementById("pin").value
+                    phone = document.getElementById("phone").value
+                    email = document.getElementById("email").value
+
+                    if(name == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "name can't be empty";
+                        e.preventDefault();
+
+                    }
+                    else if(lname == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "last name can't be empty";
+                        e.preventDefault();
+
+                    }
+                   
+                    else if(country == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "country can't be empty";
+                        e.preventDefault();
+
+                    }
+                    else if(address1 == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "address can't be empty";
+                        e.preventDefault();
+
+                    }
+                  
+                   
+                    else if(town == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "town can't be empty";
+                        e.preventDefault();
+
+                    }
+                    else if(city == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "state can't be empty";
+                        e.preventDefault();
+
+                    }
+                    else if(pin == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "pin can't be empty";
+                        e.preventDefault();
+
+                    }
+                    else if(phone == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "phone can't be empty";
+                        e.preventDefault();
+
+                    }
+                    else if(email == "")
+                    {
+                        mssg = document.getElementById('message')
+                        mssg.innerHTML = "email can't be empty";
+                        e.preventDefault();
+
+                    }
+              }
+              
+              
+     
+    }
+
+
+
+    </script> -->
+
+
+
+
+    <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        element = document.getElementById('coupon')
+        element.addEventListener("click", coupons);
+        just = "{{cart.grand_total|sub:offer}}"
+        justin = parseInt(just)
+        function coupons(e)
+        {
+            e.preventDefault();
+            a= document.getElementById('coup').value
+            console.log(a)
+            console.log('hello')
+            sendData();
+            console.log('hello')
+            function sendData(){
+                console.log('hello')
+                fetch('/add_coupon',{
+                    method : "POST",
+                    headers : {
+                        "Content-type" : "application/jason",
+                        "X-CSRFToken": csrftoken,
+                    },
+                    body:JSON.stringify({
+                        
+                        coupon: a,
+                        
+                    }),
+                })
+                .then(response => response.json())
+                .then((data) => { 
+                    document.getElementById("va").innerHTML = justin-data.check;
+                    
+            });
+        }
+
+            // Replace the above to show a success message within this page, e.g.
+            // const element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '';
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  actions.redirect('thank_you.html');
+       
+    }
+        
+
+
+
+    </script>
+
+    <!-- Js Plugins -->
+    <script src="{% static 'product/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'product/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'product/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'product/js/jquery.nicescroll.min.js' %}"></script>
+    <script src="{% static 'product/js/jquery.magnific-popup.min.js' %}"></script>
+    <script src="{% static 'product/js/jquery.countdown.min.js' %}"></script>
+    <script src="{% static 'product/js/jquery.slicknav.js' %}"></script>
+    <script src="{% static 'product/js/mixitup.min.js' %}"></script>
+    <script src="{% static 'product/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'product/js/main.js' %}"></script>
+
+
+</body>
+
+</html>
+{% endblock %}

@@ -1,0 +1,212 @@
+{% extends 'admin_T/main.html' %}
+
+
+        {% block content %}
+        {% load static %}
+        <style>
+          #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+          }
+          
+          #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+          }
+          
+          @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+          }
+          
+          @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+          }
+          
+          @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+          }
+          
+          @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+          }
+          </style>
+    <div class="container tm-mt-big tm-mb-big">
+      <div class="row">
+        <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+          <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="row">
+              <div class="col-12">
+                <h2 class="tm-block-title d-inline-block">Add Product</h2>
+              </div>
+            </div>
+            <div class="row tm-edit-product-row">
+              <div class="col-xl-6 col-lg-6 col-md-12">
+                <form   enctype="multipart/form-data" class="tm-edit-product-form">
+                  {% csrf_token %}
+
+                  <div class="form-group mb-3">
+                    <label
+                      for="name"
+                      >CATEGORY NAME
+                    </label>
+                    <input
+                      id="name"
+                      name="name"
+                      type="text"
+                      class="form-control validate"
+                      required
+                    />
+                  </div>
+                  <div class="form-group mb-3">
+                    <label
+                    for="name"
+                    >MAIN CATEGORY
+                  </label>
+                  <select
+                  class="custom-select tm-select-accounts"
+                  id="main_category" name="main_categ"
+                  
+                >
+                <option value="">SELECT</option>
+                {% for ma in main %}
+                <option value="{{ma.id}}" name="{{ma.id}}" >{{ma.name}}</option>
+                {% endfor %}
+                </select>
+              </div>
+
+                  <div class="form-group mb-3">
+                    <label
+                      for="description"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control validate"
+                      rows="3"
+                      required
+                      name="details"
+                      id="description"
+                    ></textarea>
+                  </div>
+                  <div id="snackbar"></div>
+                  
+                  
+              </div>
+            
+                
+              <div class="col-12">
+                <button type="submit" id="send" class="btn btn-primary btn-block text-uppercase">Add CATEGORY Now</button>
+              </div>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="tm-footer row tm-mt-small">
+        <div class="col-12 font-weight-light">
+          <p class="text-center text-white mb-0 px-4 small">
+            Copyright &copy; <b>2018</b> All rights reserved. 
+            
+            Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+        </p>
+        </div>
+    </footer> 
+    <script>
+      function myFunction() {
+        var x = document.getElementById("snackbar");
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+      }
+      </script>
+
+
+      <script>
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        element = document.getElementById('send')
+        element.addEventListener("click", coupons);
+        
+        function coupons(e)
+        {
+            e.preventDefault();
+            name = document.getElementById('name').value
+            main_cate = document.getElementById('main_category').value
+            details = document.getElementById('description').value
+            console.log(name)
+            console.log(main_cate)
+            console.log(details) 
+           
+            console.log('hello')
+            sendData();
+            console.log('hello')
+            function sendData(){
+                console.log('hello')
+                fetch('/admins/add_category',{
+                    method : "POST",
+                    headers : {
+                        "Content-type" : "application/jason",
+                        "X-CSRFToken": csrftoken,
+                    },
+                    body:JSON.stringify({
+                        
+                        name: name,
+                        main_ca : main_cate,
+                        det : details
+                        
+                    }),
+                })
+                .then(response => response.json())
+                .then((data) => { 
+                  var x = document.getElementById("snackbar");
+                  x.innerHTML = data.message
+                  x.className = "show";
+                  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);;
+                    
+            });
+        }
+
+            // Replace the above to show a success message within this page, e.g.
+            // const element = document.getElementById('paypal-button-container');
+            // element.innerHTML = '';
+            // element.innerHTML = '<h3>Thank you for your payment!</h3>';
+            // Or go to another URL:  actions.redirect('thank_you.html');
+       
+    }
+        
+
+
+
+    </script>
+
+
+  {% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'admin_T/main.html' %}
+
+
+        {% block content %}
+        {% load static %}
+        <style>
+          #snackbar {
+            visibility: hidden;
+            min-width: 250px;
+            margin-left: -125px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            font-size: 17px;
+          }
+          
+          #snackbar.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+          }
+          
+          @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;} 
+            to {bottom: 30px; opacity: 1;}
+          }
+          
+          @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+          }
+          
+          @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;} 
+            to {bottom: 0; opacity: 0;}
+          }
+          
+          @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+          }
+          </style>
+        
+        <div id="snackbar"></div>
+        <script>
+      
+          {% for message in messages %}
+  
+          var x = document.getElementById("snackbar");
+          x.innerHTML = "{{ message }}"
+          x.className = "show";
+          setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+      {% endfor %}
+        </script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+      
+          <div class="tm-bg-primary-dark tm-block tm-block-products">
+            <div class="tm-product-table-container">
+              <table class="table table-hover tm-table-small tm-product-table">
+                <thead>
+                  <tr>
+                    <th scope="col">sl/no</th>
+                    <th scope="col">PRODUCT NAME</th>
+                    <th scope="col">PRODUCT PRICE</th>
+                    <th scope="col">PRODUCT STOCK</th>
+                    <th scope="col">PRODUCT CATEGORY</th>
+                    <th scope="col">PRODUCT IMAGE</th>
+                    <th scope="col">DELETE</th>
+                    <th scope="col">EDIT</th>
+                    <th scope="col">&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for product in pro %}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td class="tm-product-name">{{product.name}}</td>
+                    <td> {{product.price}} </td>
+                    <td> {{product.stock}} </td>
+                    <td>{{product.category_id}}</td>
+                    {% if product.image_product %}
+                    <td> <img src="{{product.image_product.url}}" style="width: 5ch;"  alt=""></td>
+                      {% endif %}
+                    <td>
+                      <span  onclick="delet('{{product.id}}')" class="tm-product-delete-link">
+                        <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                      </span>
+                    </td>
+                    <td>
+                      <a href="edit_product/{{product.id}}" >
+                                            EDIT  </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% if search %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if pro.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="/admins/product?pages={{pro.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    
+    <li class="page-item"><a class="page-link" href="">{{pro.number}}</a></li>
+ {% if pro.has_next %}   
+    <li class="page-item">
+      <a class="page-link" href="/admins/product?pages={{pro.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+            </div>
+            <!-- table container -->
+            <a
+              href="add_product"
+              class="btn btn-primary btn-block text-uppercase mb-3">Add new product</a>
+        
+          </div>
+        </div>
+        
+    
+    <footer class="tm-footer row tm-mt-small">
+      <div class="col-12 font-weight-light">
+        <p class="text-center text-white mb-0 px-4 small">
+          Copyright &copy; <b>2018</b> All rights reserved. 
+          
+          Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+        </p>
+      </div>
+    </footer>
+<script>
+  function delet(id){
+
+  swal({
+    title: "Are you sure?",
+    text: "Once deleted, you will not be able to recover this PRODUCT",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      swal("PRODUCT HAS BEEN DELETED", {
+        icon: "success",
+        
+      });
+      window.location.href = "/admins/delete/"+id
+    } else {
+      swal("PRODUCT DOESN'T DELETED");
+    }
+  });
+}
+</script>
+   {% endblock %}

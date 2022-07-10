@@ -1,0 +1,135 @@
+{% extends 'admin_T/main.html' %}
+
+
+        {% block content %}
+        {% load static %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+      <div class="row tm-content-row">
+        <div class="col-sm-12 col-md-12 col-lg-8 col-xl-8 tm-block-col">
+          <div class="tm-bg-primary-dark tm-block tm-block-products">
+            <div class="tm-product-table-container">
+              <table class="table table-hover tm-table-small tm-product-table">
+                <thead>
+                  <tr>
+                    <th scope="col">sl/no</th>
+                    <th scope="col">PRODUCT NAME</th>
+                    
+                  
+                    <th scope="col">MAIN CATEGORY</th>
+                    
+                    <th scope="col">DELETE</th>
+                    <th scope="col">EDIT</th>
+                    <th scope="col">&nbsp;</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for product in pro %}
+                  <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td class="tm-product-name">{{product.namer}}</td>
+                  
+                    
+                    <td>{{product.main_cate}}</td>
+                    
+                    <td>
+                      <span  onclick="delet('{{product.id}}')" class="tm-product-delete-link">
+                        <i class="far fa-trash-alt tm-product-delete-icon"></i>
+                      </span>
+                    </td>
+                    <td>
+                      <a href="edit_cate/{{product.id}}" >
+                                            EDIT  </a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% if search %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if pro.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="/admins/product?pages={{pro.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    
+    <li class="page-item"><a class="page-link" href="">{{pro.number}}</a></li>
+ {% if pro.has_next %}   
+    <li class="page-item">
+      <a class="page-link" href="/admins/product?pages={{pro.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+            </div>
+            <!-- table container -->
+            <a
+              href="add_category"
+              class="btn btn-primary btn-block text-uppercase mb-3">ADD CATEGORY</a>
+        
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 col-lg-4 col-xl-4 tm-block-col">
+          <div class="tm-bg-primary-dark tm-block tm-block-product-categories">
+            <h2 class="tm-block-title">MAIN CATEGORY</h2>
+            {% for message in messages %}
+            <div class="alert alert-danger"> {{message}}  </div>
+            {% endfor %}
+            <div class="tm-product-table-container">
+              <table class="table tm-table-small tm-product-table">
+                <tbody>
+                  {% for cat in cats %}
+                  <tr>
+                    <td class="tm-product-name">{{cat.name}}</td>
+                    
+                  </tr>
+                 {% endfor %}
+                </tbody>
+              </table>
+             
+            </div>
+            <!-- table container -->
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="tm-footer row tm-mt-small">
+      <div class="col-12 font-weight-light">
+        <p class="text-center text-white mb-0 px-4 small">
+          Copyright &copy; <b>2018</b> All rights reserved. 
+          
+          Design: <a rel="nofollow noopener" href="https://templatemo.com" class="tm-footer-link">Template Mo</a>
+        </p>
+      </div>
+    </footer>
+    <script>
+        function delet(id){
+      
+        swal({
+          title: "Are you sure?",
+          text: "YOU NEED TO DELETE",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            swal("ENTRY HAS BEEN DELETED", {
+              icon: "success",
+              
+            });
+            window.location.href = "delete_category/"+id
+          } else {
+            swal("ENTRY DOESN'T DELETED");
+          }
+        });
+      }
+      </script>
+   {% endblock %}

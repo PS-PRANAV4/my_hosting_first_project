@@ -1,0 +1,133 @@
+{% extends 'admin_T/main.html' %}
+
+
+        {% block content %}
+        {% load static %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        
+        <div class="row tm-content-row">
+          <div class="col-12 tm-block-col">
+            <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+              <h2 class="tm-block-title">List of Accounts</h2>
+              <p class="text-white">Accounts</p>
+  
+              <div class="tm-product-table-container">     
+                
+                <table class="table table-hover tm-table-small tm-product-table ">
+  
+                  <form action="accounts" style="position: fixed;"  method="POST">  <div class="input-group">
+                  {% csrf_token %}
+                  <div class="form-outline" >
+                    <input type="search" name="search" id="form1" class="form-control"  />
+                    
+                  </div>
+                  <div >
+                  <button type="submit" class="btn btn-primary" >
+                    <i class="fas fa-search"></i>
+                  </button>
+              
+                </div>
+                </div>
+              </form>
+
+  <thead class="" >
+    <tr>
+      <th scope="col">id</th>
+      <th scope="col">First name</th>
+      <th scope="col">Last name</th>
+      <th scope="col">username</th>
+      <th scope="col">email</th>
+      <th scope="col">phone number</th>
+      <th scope="col">last login</th>
+      <th scope="col">date joined</th>
+      <th scope="col">STATUS</th>
+      <!-- <th scope="col">Delete </th> -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for usern in full_user %}
+    <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{usern.first_name}}</td>
+      <td>{{usern.last_name}}</td>
+      <td>{{usern.username}}</td>
+      <td>{{usern.email}}</td>
+      <td>{{usern.phone_number}}</td>
+      <td>{{usern.last_login}}</td>
+      <td>{{usern.date_joined}}</td>
+      {% if usern.is_active  %}
+
+      <td><span ><button style="width: 15ch;" onclick="delet('{{usern.id}}')" class="btn btn-warning">Active</button></span></td>
+      {% else %}
+      <td><span ><button class="btn btn-danger" onclick="delet('{{usern.id}}')" style="width: 15ch;" >Deactive</button></span></td>
+      {% endif %}     
+      <!-- <td><a href="delete_user/{{usern.id}}"><button class="btn btn-danger">DELETE</button></a></td> -->
+    </tr>
+  {% endfor %}
+  
+  </tbody>
+  
+</table>
+{% if search %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    {% if full_user.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="/admins/accounts?page={{full_user.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {% endif %}
+    
+    <li class="page-item"><a class="page-link" href="">{{full_user.number}}</a></li>
+ {% if full_user.has_next %}   
+    <li class="page-item">
+      <a class="page-link" href="/admins/accounts?page={{full_user.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
+</div>
+
+
+
+
+<!-- <a href="add_users"><button class="btn btn-primary  text-uppercase" >ADD USER</button></a> -->
+
+
+<script>
+  function delet(id){
+
+  swal({
+    title: "R U SURE",
+    text: "",
+    icon: "warning",
+    buttons: true,
+    dangerMode: true,
+  })
+  .then((willDelete) => {
+    if (willDelete) {
+      swal("COMPLETED", {
+        icon: "success",
+        
+        
+        
+      }).then(()=>{ window.location.href = "block/"+id
+    })
+
+      
+    } else {
+      swal("ENTRY DOESN'T DELETED");
+    }
+  });
+}
+</script>
+
+
+
+
+
+{% endblock %}
