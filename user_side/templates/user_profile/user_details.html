@@ -5,7 +5,7 @@
 <div style="width: 100%; display: flex; justify-content: center; font-family: 'Times New Roman, Times, serif'; text-transform: uppercase; color: brown; "  >
 
 <div class="card" style="width: 18rem;">
-  {% if user.profile_pic.url %}
+  {% if user.profile_pic %}
   <img class="card-img-top" src="{{user.profile_pic.url}}" alt="Card image cap">
   {% endif %}
   <div class="card-body">

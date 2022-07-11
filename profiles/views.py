@@ -89,10 +89,13 @@ def pic(request):
         pro = Accounts.objects.get(email =user)
         if len(request.FILES)!=0:
             print('entered1')
-            if len(pro.profile_pic)>0:
-                print('entered2')
-                os.remove(pro.profile_pic.path)
-                print('removed')
+            try:
+                if len(pro.profile_pic)>0:
+                    print('entered2')
+                    os.remove(pro.profile_pic.path)
+                    print('removed')
+            except:
+                pass
             pro.profile_pic = request.FILES['pic']
             pro.save()
             print('saved')
