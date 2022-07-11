@@ -18,6 +18,7 @@ def index(request):
 
 def order_payment(request,id,check):
     cart_id = request.session.get('cart_product')
+    print(cart_id)
     if cart_id:
         cart_products = CartProduct.objects.get(id = cart_id)
         offer = cart_products.product.offer

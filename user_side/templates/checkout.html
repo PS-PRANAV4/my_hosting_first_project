@@ -103,6 +103,7 @@
                             <input type="text" style="height:50%; width: 50%;   background-color: aqua;" name="coup" id="coup"  >
                             <button type="submit" class="btn btn-success mt-1" id="coupon" style="height: 10% ; width: 50%;" >SUBMIT</button>
                         </div>
+                        <a class="btn btn-outline-success mt-2" href="/user_profile/address/{{user.id}}">ADD PROFILE</a>
                             <form action="/check/{{user.id}}" method="POST">
                                 {% csrf_token %}
                             

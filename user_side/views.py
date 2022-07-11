@@ -2,6 +2,7 @@
 from distutils.log import error
 
 import json
+from profiles.views import user_address
 
 
 
@@ -378,28 +379,15 @@ def check_out(request,id = 0):
         check  = request.POST.get('check')
         print(check)
         
-        if check == '0' :
-            first_name  = request.POST.get('first_name')
-            last_name = request.POST.get('last_name')
-            country = request.POST.get('country')
-            address1 = request.POST.get('address1')
-            address2 = request.POST.get('address2')
-            town = request.POST.get('town')
-            state = request.POST.get('state')
-            phone = request.POST.get('phone')
-            pin = request.POST.get('pin')
-            email = request.POST.get('email')
-            notes = request.POST.get('note')
-            address = address1+' ' +address2
-            user = Accounts.objects.get(id=id)
-            new_profile = Profile.objects.create(first_name = first_name, last_name = last_name, country_name = country, address = address, town_city = town, state = state , phone_number = phone, post_code = pin, email = email, notes = notes,accounts = user)
-            check1 = new_profile.id
-        else:
+        
+        try:
             check2 = Profile.objects.get(id = check)
             check1 = check2.id
-        
+        except :
+            messages.error(request,'first add address')
+            return redirect(user_address,id)
         if check1 != None:
-            return redirect(purchase,check1,id)
+            return redirect(purchase,check1,id) 
 
 
     if id > 0:
