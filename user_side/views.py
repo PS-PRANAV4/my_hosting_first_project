@@ -528,6 +528,7 @@ def checkout(request,check, id):
     cart_product = CartProduct.objects.filter(cart = user_cart)
     
     cart_id = request.session.get('cart_product')
+    print(cart_id)
     if cart_id:
         cart_products = CartProduct.objects.get(id = cart_id)
         
