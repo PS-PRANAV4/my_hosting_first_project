@@ -585,8 +585,10 @@ def purchase(request,check,id):
         cart = CartProduct.objects.get(id=cart_product)
         if request.method == "POST":
             return redirect(checkout,check,id)
+        print('here')
         return render(request,'purchase.html',{'check':check, 'id':id,'carts': cart, 'offer':cart.product.offer} )
-    except:
+    except Exception as e:
+        print(e) 
         cart = Cart.objects.get(user = id)
         if cart.grand_total>0:
         
@@ -600,7 +602,7 @@ def purchase(request,check,id):
             if cart.coupon_offer > 0:
                 total_offer = total_offer+cart.coupon_offer
             
-                print('nowss')
+            print('nowss')
             return render(request,'purchase.html',{'check':check, 'id':id,'cart': cart, 'offer':total_offer} )
         else:
             return redirect(first)
