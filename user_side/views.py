@@ -43,9 +43,12 @@ from fashion_now.settings import TWILLIO_SERVICE_ID,TWILLIO_ACCOUNT_SID,TWILLIO_
 # Create your views here.
 @cache_control(no_cache = True, must_revalidate = True, no_store = True)
 def first(request):
+    men = MainCategory.objects.get(name = "MEN")
+    women = MainCategory.objects.get(name="WOMEN")
+    kids = MainCategory.objects.get(name = "KIDS")
     products = Products.objects.all()
     categories = Category.objects.all()
-    return render(request,'land.html', {'products': products,'categories':categories})
+    return render(request,'land.html', {'products': products,'categories':categories,"men":men,"women":women})
 
 @cache_control(no_cache = True, must_revalidate = True, no_store = True)
 def signin(request):
