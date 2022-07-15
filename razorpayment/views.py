@@ -27,18 +27,18 @@ def order_payments(request,id,check):
         cart_products = CartProduct.objects.get(id = cart_id)
         offer = cart_products.product.offer
         amount = cart_products.product.price - offer
-        request.session['check']  = check
+        # request.session['check']  = check
         user_o = Accounts.objects.get(id=id)
-        c_id = user_o.id
-        request.session['user']  = user_o.id
+        # c_id = user_o.id
+        # request.session['user']  = user_o.id
     else:
         request.session['check']  = check
         user =request.user
         print(user,'jjjjjjjjjjjjjjjj')
         user_o = Accounts.objects.get(id=id)
-        c_id = user_o.id
+        # c_id = user_o.id
         print(check)
-        request.session['user']  = user_o.id
+        # request.session['user']  = user_o.id
         cart = Cart.objects.get(user=user_o)
         if cart.grand_total > 0:
             
