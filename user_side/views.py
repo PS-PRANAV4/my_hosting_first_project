@@ -536,7 +536,10 @@ def checkout(request,check, id):
         try:
             cart_products = CartProduct.objects.get(id = cart_id)
         except:
-            return redirect(checkout,check,id)
+            try:
+                cart_id = request.COOKIES['cartpro']
+            except:
+                cart_products = CartProduct.objects.get(id = cart_id)
 
         cart_products = CartProduct.objects.get(id= cart_id)
         order = Order.objects.create(user = user_details, delivery_address = profile, status = 'ACCEPTED', grand_total = cart_products.total_amount )
