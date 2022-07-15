@@ -156,6 +156,7 @@ def course_changer(request):
         cart_id = request.COOKIES['cart_product']
         request.session['cart_product'] = cart_id
         ca = CartProduct.objects.get(id= cart_id )
-
+        cas = ca.id
         print(ca)
-        return redirect(checkout,check,id,ca)
+        
+        return redirect(checkout,check,id,cas)
