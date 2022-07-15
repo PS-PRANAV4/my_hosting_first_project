@@ -143,10 +143,10 @@ def callback(request):
         return render(request, "callback.html", context={"status": order.status})
     
 def course_changer(request):
-    # check = request.session.get('check')
-    # id = request.session.get('user')
-    check = request.COOKIES['ad']
-    id = request.COOKIES['user']
+    check = request.session.get('check')
+    id = request.session.get('user')
+    # check = request.COOKIES['ad']
+    # id = request.COOKIES['user']
     print(check,id,'ffffffffffffffffffff')
 
     return redirect(checkout,check,id)
