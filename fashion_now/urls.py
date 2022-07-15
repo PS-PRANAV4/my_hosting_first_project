@@ -29,6 +29,8 @@ urlpatterns = [
     path('',include('razorpayment.urls')),
     path('admins/',include('coupon.urls')),
     path('todo/',include('todo.urls')),
+    path('etc/',include('marks_calc.urls')),
+
 
 
     

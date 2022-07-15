@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'coupon.apps.CouponConfig',
     'todo.apps.TodoConfig',
     'notification.apps.NotificationConfig',
+    'marks_calc.apps.MarksCalcConfig',
 ]
 
 MIDDLEWARE = [

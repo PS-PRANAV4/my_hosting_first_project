@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Login Page - Product Admin Template</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Roboto:400,700"
+    />
+    <!-- https://fonts.google.com/specimen/Open+Sans -->
+    <link rel="stylesheet" href="{% static 'admin_t/css/fontawesome.min.css' %}" />
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="{% static 'admin_t/css/bootstrap.min.css' %}" />
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="{% static 'admin_t/css/templatemo-style.css' %}">
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+  </head>
+
+  <body>
+
+
+    <div class="container tm-mt-big tm-mb-big">
+      <div class="row">
+        <div class="col-12 mx-auto tm-login-col">
+          <div class="tm-bg-primary-dark tm-block tm-block-h-auto">
+            <div class="row">
+              <div class="col-12 text-center">
+                <h2 class="tm-block-title mb-4">SESSION MARKS</h2>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-12">
+                <form action="/etc/enter" method="POST" class="tm-login-form">
+                  {% csrf_token %}
+                  <div class="form-group">
+                    <label for="username">ENTER THE NAME OF PERSON</label>
+                    
+                    <select
+                    class="custom-select tm-select-accounts"
+                    id="username" name="username"
+                    
+                  >
+                  <option value="">SELECT</option>
+                  
+                  <option value="noble" name="noble" >noble</option>
+                  <option value="aalbin" name="aalbin" >aalbin</option>
+                  <option value="anandhu" name="anandhu" >anandhu</option>
+                  <option value="danish" name="danish" >danish</option>
+                  <option value="deepthi" name="deepthi" >deepthi</option>
+                  <option value="sai" name="sai" >sai</option>
+                  <option value="shahidha" name="shahidha" >shahidha</option>
+                  <option value="vyshnav" name="vyshnav" >vyshnav</option>
+                  <option value="nabeel" name="nabeel" >nabeel</option>
+                  <option value="arun" name="arun" >arun</option>
+                  <option value="abin" name="abin" >abin</option>
+                  <option value="pranav" name="pranav" >pranav</option>
+                  <option value="sidharth" name="sidharth" >sidharth</option>
+                  
+                  </select>
+
+                  </div>
+                  <div class="form-group">
+                    <label for="username">ENTER THE MARKS FOR CONFIDENCE</label>
+                    <input
+                      name="confidence"
+                      type="text"
+                      class="form-control "
+                      id="confidence"
+                     
+                      
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="username">ENTER THE MARKS FOR CONTENT</label>
+                    <input
+                      name="content"
+                      type="text"
+                      class="form-control "
+                      id="content"
+                     
+                      
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="username">ENTER THE MARKS FOR FLUENCY</label>
+                    <input
+                      name="fluency"
+                      type="text"
+                      class="form-control "
+                      id="fluency"
+                      
+                      
+                    />
+                  </div>
+                  
+                  <div class="form-group mt-4">
+                    <button
+                      type="submit"
+                      class="btn btn-primary btn-block text-uppercase" 
+                      id="sent"
+                    >
+                      DONE
+                    </button>
+                  </div>
+                  {% for message in messages %}
+                  <div class="alert alert-danger" role="alert">
+                    {{message}}
+                  </div>
+                  {% endfor %}
+                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+   
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script>
+        a =  document.getElementById('sent')
+        a.addEventListener("click", sent);
+     function sent(e)
+ 
+         {
+             e.preventDefault();
+             
+         
+         function getCookie(name) {
+             let cookieValue = null;
+             if (document.cookie && document.cookie !== '') {
+                 const cookies = document.cookie.split(';');
+                 for (let i = 0; i < cookies.length; i++) {
+                     const cookie = cookies[i].trim();
+                     // Does this cookie string begin with the name we want?
+                     if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                         break;
+                     }
+                 }
+             }
+             return cookieValue;
+         }
+         var csrftoken = getCookie('csrftoken');
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+         
+ 
+             
+           
+         
+         
+         
+             
+             console.log('hello')
+             username =  document.getElementById('username').value;
+             console.log('hello');
+             console.log(username);
+             confidence =  document.getElementById('confidence').value;
+             console.log(confidence);
+             content =  document.getElementById('content').value;
+             console.log(content);
+             fluency =  document.getElementById('fluency').value;
+             console.log(fluency);
+             
+             
+             sendData()
+             function sendData(){
+                 console.log('hello')
+                 fetch('/etc/mark/{{id}}',{
+                     method : "POST",
+                     headers : {
+                         "Content-type" : "application/jason",
+                         "X-CSRFToken": csrftoken,
+                     },
+                     body:JSON.stringify({
+                         
+                         username:username,
+                         confidence:confidence,
+                         content:content,
+                         fluency:fluency,
+                         
+                     }),
+                 })
+                 .then(response => response.json())
+                 .then((data) => { 
+                     
+ 
+                    
+             console.log('hello');
+             
+             document.getElementById('confidence').value = ''
+             
+              document.getElementById('content').value = ''
+             
+              document.getElementById('fluency').value = ''
+                     
+                     
+             });
+         }
+ 
+           
+         
+ 
+     }
+         </script>
+
+
+  </body>
+</html>
