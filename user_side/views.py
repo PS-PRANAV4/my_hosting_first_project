@@ -528,7 +528,7 @@ def checkout(request,check, id):
     user_details = Accounts.objects.get(email=user_email)
     
     user_cart = Cart.objects.get(user = user_details)
-    cart_product = CartProduct.objects.filter(cart = user_cart)
+    
     
     cart_id = request.session.get('cart_product')
     print(cart_id)
@@ -549,6 +549,7 @@ def checkout(request,check, id):
             order.save()
         return redirect(invoice,id)
     if user_cart.grand_total > 0:
+        cart_product = CartProduct.objects.filter(cart = user_cart)
         total_offer = 0
         order = Order.objects.create(user = user_details, delivery_address = profile, status = 'ACCEPTED', grand_total = user_cart.grand_total )
         for cart in cart_product:
