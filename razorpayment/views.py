@@ -15,9 +15,12 @@ from django.views.decorators.cache import cache_control
 
 def index(request):
     return render(request,'indexx.html')
-
-
 def order_payment(request,id,check):
+    request.session['check']  = check
+    user_o = Accounts.objects.get(id=id)
+    c_id = user_o.id
+    return redirect(order_payments, id,check)
+def order_payments(request,id,check):
     cart_id = request.session.get('cart_product')
     print(cart_id)
     if cart_id:

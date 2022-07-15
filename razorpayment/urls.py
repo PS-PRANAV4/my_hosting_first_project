@@ -7,5 +7,7 @@ from . import views
 urlpatterns = [
     path('payment',views.index),
     path('payment/<int:id>/<int:check>',views.order_payment),
+    path('payments/<int:id>/<int:check>',views.order_payments),
+
     path("razorpay/callback/", views.callback, name="callback"),
     path("course", views.course_changer, ),]
