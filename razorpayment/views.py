@@ -153,5 +153,9 @@ def course_changer(request):
     except:
         id = request.COOKIES['user']
         check = request.COOKIES['ad']
+        cart_id = request.COOKIES['cart_product']
+        request.session['cart_product'] = cart_id
+        ca = CartProduct.objects.get(id= cart_id )
+
         
         return redirect(checkout,check,id)
