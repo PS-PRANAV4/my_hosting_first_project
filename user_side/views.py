@@ -397,7 +397,7 @@ def check_out(request,id = 0):
        
         try:
             print('hereeeeeee')    
-            del request.session['cart_product']
+            request.session['cart_product'] = False
         except:
             print('hesssssss')
             pass
