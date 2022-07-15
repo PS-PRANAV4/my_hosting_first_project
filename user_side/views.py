@@ -533,17 +533,18 @@ def checkout(request,check, id,ca = 0):
     cart_id = request.session.get('cart_product')
     print(cart_id,'ggggggggggggggggggggggggggggggggg')
     print(ca)
-    if ca > 0:
+    if ca > 0 or cart_id:
         try:
             cart_products = CartProduct.objects.get(id = ca)
         except:
             try:
-                cart_id = request.COOKIES['cartpro']
+                cart_products = CartProduct.objects.get(id= cart_id)
             except:
+                cart_id = request.COOKIES['cartpro']
+                cart_products = CartProduct.objects.get(id= cart_id)        
                 
-                return HttpResponse(request,f"<div>hello{cart_id}</div>")
 
-        cart_products = CartProduct.objects.get(id= cart_id)
+        
         order = Order.objects.create(user = user_details, delivery_address = profile, status = 'ACCEPTED', grand_total = cart_products.total_amount )
         orderprodcts = ProductOrders.objects.create(product = cart_products.product, quantity = cart_products.quantity, total_amount = cart_products.total_amount, main_order = order) 
         myproduct = Products.objects.get(id = orderprodcts.product.id)
