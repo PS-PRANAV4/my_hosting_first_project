@@ -158,4 +158,4 @@ def course_changer(request):
         ca = CartProduct.objects.get(id= cart_id )
 
         
-        return redirect(checkout,check,id)
+        return redirect(checkout,check,id,ca)

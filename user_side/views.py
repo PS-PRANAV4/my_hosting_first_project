@@ -522,7 +522,7 @@ def delete_cart(request,id, us):
     print()
     return redirect(cart,us)
 
-def checkout(request,check, id):
+def checkout(request,check, id,ca = 0):
     profile = Profile.objects.get(id=check)
     user_email = profile.accounts
     user_details = Accounts.objects.get(email=user_email)
@@ -532,9 +532,9 @@ def checkout(request,check, id):
     
     cart_id = request.session.get('cart_product')
     print(cart_id)
-    if cart_id:
+    if ca > 0:
         try:
-            cart_products = CartProduct.objects.get(id = cart_id)
+            cart_products = CartProduct.objects.get(id = ca)
         except:
             try:
                 cart_id = request.COOKIES['cartpro']
