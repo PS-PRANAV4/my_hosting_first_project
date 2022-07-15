@@ -539,7 +539,7 @@ def checkout(request,check, id):
             try:
                 cart_id = request.COOKIES['cartpro']
             except:
-                cart_products = CartProduct.objects.get(id = cart_id)
+                
                 return HttpResponse(request,cart_id)
 
         cart_products = CartProduct.objects.get(id= cart_id)
