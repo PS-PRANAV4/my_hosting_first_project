@@ -531,7 +531,8 @@ def checkout(request,check, id,ca = 0):
     
     
     cart_id = request.session.get('cart_product')
-    print(cart_id)
+    print(cart_id,'ggggggggggggggggggggggggggggggggg')
+    print(ca)
     if ca > 0:
         try:
             cart_products = CartProduct.objects.get(id = ca)
