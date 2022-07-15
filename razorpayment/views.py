@@ -77,6 +77,7 @@ def order_payments(request,id,check):
     )
     response.set_cookie("user",c_id)
     response.set_cookie('ad',check)
+    response.set_cookie('cartpro',cart_id)
     return response
         
 
