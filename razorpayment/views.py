@@ -1,3 +1,4 @@
+from urllib import response
 from django.shortcuts import redirect, render
 import razorpay
 from admins.models import Accounts
@@ -60,7 +61,7 @@ def order_payment(request,id,check):
             user=user_o, total_amount=amount, order_id=razorpay_order['id']
         )
     payment.save()
-    return render(
+    response = render(
         request,
         "payment.html",
         {
@@ -69,6 +70,9 @@ def order_payment(request,id,check):
             "order": payment,
         },
     )
+    response.set_cookie("user",c_id)
+    response.set_cookie('ad',check)
+    return response
         
 
 @cache_control(no_cache = True, must_revalidate = True, no_store = True)
@@ -134,8 +138,10 @@ def callback(request):
         return render(request, "callback.html", context={"status": order.status})
     
 def course_changer(request):
-    check = request.session.get('check')
-    id = request.session.get('user')
+    # check = request.session.get('check')
+    # id = request.session.get('user')
+    check = request.COOKIES['ad']
+    id = request.COOKIES['user']
     print(check,id,'ffffffffffffffffffff')
 
     return redirect(checkout,check,id)
