@@ -66,7 +66,7 @@ def order_payments(request,id,check):
             user=user_o, total_amount=amount, order_id=razorpay_order['id']
         )
     payment.save()
-    response = render(
+    return render(
         request,
         "payment.html",
         {
@@ -75,9 +75,9 @@ def order_payments(request,id,check):
             "order": payment,
         },
     )
-    response.set_cookie("user",c_id)
-    response.set_cookie('ad',check)
-    return response
+    # response.set_cookie("user",c_id)
+    # response.set_cookie('ad',check)
+    # return response
         
 
 @cache_control(no_cache = True, must_revalidate = True, no_store = True)
