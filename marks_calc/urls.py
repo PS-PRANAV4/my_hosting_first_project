@@ -6,7 +6,8 @@ from . import views
 urlpatterns = [
     path('author',views.authors),
     path('mark/<int:id>',views.mark),
-    path('result/<str:name>',views.report),
+    path('result',views.report),
+    path('de',views.delet),
 
 
     ] 
