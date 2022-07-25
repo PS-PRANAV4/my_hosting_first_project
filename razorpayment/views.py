@@ -160,5 +160,7 @@ def course_changer(request):
         print(cart_id,'gggggggggggggggggggggfffffffffffffffffff')
         
         return redirect(checkout,check,id,cart_id)
+        print('s')
+        print('b')
         
 
