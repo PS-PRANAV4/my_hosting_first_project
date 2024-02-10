@@ -91,25 +91,25 @@ AUTH_USER_MODEL = 'admins.Accounts'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': BASE_DIR / 'db.sqlite3',
-#    }
-#}
-
-
-
-DATABASES={
-    'default':{
-       'ENGINE':'django.db.backends.postgresql_psycopg2',
-       'NAME':'fashion',
-       'USER':'postgres',
-       'PASSWORD':config('DB_PASSWORD'),
-       'HOST':config("HOST"),
-       'PORT':'5432',
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
- }
+}
+
+
+
+#DATABASES={
+#    'default':{
+#       'ENGINE':'django.db.backends.postgresql_psycopg2',
+#       'NAME':'fashion',
+#       'USER':'postgres',
+#       'PASSWORD':config('DB_PASSWORD'),
+#       'HOST':config("HOST"),
+#       'PORT':'5432',
+#    }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -164,9 +164,9 @@ MEDIA_ROOT = BASE_DIR/'media'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID')
-RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET')
+#RAZORPAY_KEY_ID = config('RAZORPAY_KEY_ID')
+#RAZORPAY_KEY_SECRET = config('RAZORPAY_KEY_SECRET')
 # GIT REPO = https://github.com/PS-PRANAV4/django_first_project.git
-TWILLIO_ACCOUNT_SID = config('TWILLIO_ACCOUNT_SID')
-TWILLIO_AUTH_TOKEN = config('TWILLIO_AUTH_TOKEN')
-TWILLIO_SERVICE_ID = config('TWILLIO_SERVICE_ID')  
+#TWILLIO_ACCOUNT_SID = config('TWILLIO_ACCOUNT_SID')
+#TWILLIO_AUTH_TOKEN = config('TWILLIO_AUTH_TOKEN')
+#TWILLIO_SERVICE_ID = config('TWILLIO_SERVICE_ID')  
