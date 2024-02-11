@@ -4,6 +4,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('cart/<str:us>',views.cart), 
     path('',views.first ),
     path('signin',views.signin ),
     path('signup',views.signup ),
@@ -45,7 +46,8 @@ urlpatterns = [
     path('guest_check',views.guest_check),
     path('redirects_for_guest',views.buy_now_redirect),
     path('best_deals', views.best_deals),
-    path('pay_using wallet/<int:check>',views.pay_wallet),   
+    path('pay_using wallet/<int:check>',views.pay_wallet),  
+    
 
 
 

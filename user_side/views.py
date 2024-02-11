@@ -432,45 +432,47 @@ def guest_show(request,cart_id,total_offer):
     pass
 
 def cart(request, us):
-    print( 'hello')
-    if us == 0:
-        pro = request.session.get('pro')
-        pros = Products.objects.get(id=pro)
-        if pros.stock <=  0:
-            messages.error(request,'no stock product')
-            return redirect(product_details,pro)
+    if us != "None":
+        print( 'hello')
+        if us == 0:
+            pro = request.session.get('pro')
+            pros = Products.objects.get(id=pro)
+            if pros.stock <=  0:
+                messages.error(request,'no stock product')
+                return redirect(product_details,pro)
 
-        cart_id = request.session.get('cart_id')
-        if cart_id == None:
-            carts = Cart.objects.create(grand_total = pros.price,coupon_offer = 0)
-            cart_id = carts.id
-            request.session['cart_id'] = cart_id
-        single_cart = Cart.objects.get(id=cart_id)
-        print(pros.price)
-        pro = CartProduct.objects.create(product=pros,quantity=1, total_amount = pros.price,cart = single_cart)
+            cart_id = request.session.get('cart_id')
+            if cart_id == None:
+                carts = Cart.objects.create(grand_total = pros.price,coupon_offer = 0)
+                cart_id = carts.id
+                request.session['cart_id'] = cart_id
+            single_cart = Cart.objects.get(id=cart_id)
+            print(pros.price)
+            pro = CartProduct.objects.create(product=pros,quantity=1, total_amount = pros.price,cart = single_cart)
+            
+            full_cart = CartProduct.objects.filter(cart = single_cart)
+            
+            total_offer = 0
+            total_amount = 0
+            for product in full_cart:
+                total_amount = total_amount+product.total_amount
+                total_offer = total_offer+product.product.offer*product.quantity
+            single_cart.grand_total = total_amount
+            single_cart.save()
+            return redirect(guest_show,cart_id,total_offer)
         
-        full_cart = CartProduct.objects.filter(cart = single_cart)
+            
         
+        myuser = Accounts.objects.get(id=us)
+        single_cart = Cart.objects.get(user=myuser)
+        full_cart = CartProduct.objects.filter(cart = single_cart).order_by('-id')
         total_offer = 0
-        total_amount = 0
         for product in full_cart:
-            total_amount = total_amount+product.total_amount
             total_offer = total_offer+product.product.offer*product.quantity
-        single_cart.grand_total = total_amount
-        single_cart.save()
-        return redirect(guest_show,cart_id,total_offer)
-       
         
-       
-    myuser = Accounts.objects.get(id=us)
-    single_cart = Cart.objects.get(user=myuser)
-    full_cart = CartProduct.objects.filter(cart = single_cart).order_by('-id')
-    total_offer = 0
-    for product in full_cart:
-        total_offer = total_offer+product.product.offer*product.quantity
-    
-    return render(request,'shop-cart.html',{'products':full_cart,'single':single_cart,'offer':total_offer})
-
+        return render(request,'shop-cart.html',{'products':full_cart,'single':single_cart,'offer':total_offer})
+    else:
+        return redirect(signin)
 def guest(request,id):
     
     request.session['pro'] = id
