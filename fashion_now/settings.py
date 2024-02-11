@@ -147,11 +147,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [ 
-#     os.path.join('static')
-# ]
+STATICFILES_DIRS = [ 
+    os.path.join('static')
+]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 
@@ -171,6 +171,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #TWILLIO_AUTH_TOKEN = config('TWILLIO_AUTH_TOKEN')
 #TWILLIO_SERVICE_ID = config('TWILLIO_SERVICE_ID')  
 
-TWILLIO_ACCOUNT_SID = 'a'
-TWILLIO_AUTH_TOKEN = 'a'
-TWILLIO_SERVICE_ID = 'a' 
+TWILLIO_ACCOUNT_SID = config('account_sid')
+TWILLIO_AUTH_TOKEN = config('account_tok')
+TWILLIO_SERVICE_ID = config('service_id') 
