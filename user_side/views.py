@@ -127,157 +127,161 @@ def signin(request):
         return redirect(first)   
 
 def signup(request):
-    context = {}
-    def a(context):
-        return render(request,'signup.html',context)
+    if not request.user.is_authenticated:
+    
+        context = {}
+        def a(context):
+            return render(request,'signup.html',context)
 
-    if request.method == "POST" :
-        username = request.POST.get("username")
-        number = request.POST.get('number')
-        first_name = request.POST.get("first_name")
-        last_name = request.POST.get("last_name")
-        email = request.POST.get("email")
-        pass1 = request.POST.get("pass1")
-        pass2  = request.POST.get("pass2")
-        referal = request.POST.get("referal")
-        print(len(username))
-        if pass1 != pass2:
-            messages.error(request,"password didn't match" )
-            n = { 'login':'SIGNUp',
-                'value':4
-            }
-            c=a(n)
-            print('pass error')
-            return c
-            
-        elif len(first_name) == 0:
-            messages.error(request,'enter valid first name')
-            n = { 'login':'SIGNUp',
-                'value':1
-            }
-            c=a(n)
-            print("name can't be blank")
-            return c
-
-        elif len(last_name) == 0:
-            messages.error(request,'please input last_name')
-            n = { 'login':'SIGNUp',
-                'value':6
-            }
-            c=a(n)
-            print('mail error')
-            return c
-
-
-        elif len(username) == 0:
-            print('user error')
-            messages.error(request,'enter valid username ')
-            n = { 'login':'SIGNUp',
-                'value':2
-            }
-            c=a(n)
-            return c
-    	    
-
-        
-        elif len(email) == 0:
-            messages.error(request,'enter valid  email')
-            n = { 'login':'SIGNUp',
-                'value':3
-            }
-            c=a(n)
-            print('mail error')
-            return c
-
-        elif len(number) == 0:
-            messages.error(request,'please input phone number')
-            n = { 'login':'SIGNUp',
-                'value':5
-            }
-            c=a(n)
-            print('mail error')
-            return c
-        
-            
-
-        elif len(pass1) == 0:
-            messages.error(request,'please input password')
-            n = { 'login':'SIGNUp',
-                'value':4
-            }
-            c=a(n)
-            print('mail error')
-            return c
-           
-        
-
-        
-        
-        
-        if number:
-            try:
-                my_user =Accounts.objects.create_user(first_name,last_name,username,email, number, pass1)
-                wallet = Wallet.objects.create(user = my_user)
-            
-            except Exception as e:
-                print(e)
-
-                messages.error(request,"number already exist")
+        if request.method == "POST" :
+            username = request.POST.get("username")
+            number = request.POST.get('number')
+            first_name = request.POST.get("first_name")
+            last_name = request.POST.get("last_name")
+            email = request.POST.get("email")
+            pass1 = request.POST.get("pass1")
+            pass2  = request.POST.get("pass2")
+            referal = request.POST.get("referal")
+            print(len(username))
+            if pass1 != pass2:
+                messages.error(request,"password didn't match" )
                 n = { 'login':'SIGNUp',
-                'value':3
+                    'value':4
+                }
+                c=a(n)
+                print('pass error')
+                return c
+                
+            elif len(first_name) == 0:
+                messages.error(request,'enter valid first name')
+                n = { 'login':'SIGNUp',
+                    'value':1
+                }
+                c=a(n)
+                print("name can't be blank")
+                return c
+
+            elif len(last_name) == 0:
+                messages.error(request,'please input last_name')
+                n = { 'login':'SIGNUp',
+                    'value':6
                 }
                 c=a(n)
                 print('mail error')
                 return c
-            my_user.phone_number = number
-            request.session['pk'] = my_user.pk
-            account_sid = TWILLIO_ACCOUNT_SID 
-            auth_token = TWILLIO_AUTH_TOKEN 
-            client = Client(account_sid, auth_token)
 
-            verification = client.verify \
-                     .services(TWILLIO_SERVICE_ID) \
-                     .verifications \
-                     .create(to= f"+91{number}", channel='sms')
 
-            print(verification.status)
- 
-            if len(referal)>0:
+            elif len(username) == 0:
+                print('user error')
+                messages.error(request,'enter valid username ')
+                n = { 'login':'SIGNUp',
+                    'value':2
+                }
+                c=a(n)
+                return c
+                
+
+            
+            elif len(email) == 0:
+                messages.error(request,'enter valid  email')
+                n = { 'login':'SIGNUp',
+                    'value':3
+                }
+                c=a(n)
+                print('mail error')
+                return c
+
+            elif len(number) == 0:
+                messages.error(request,'please input phone number')
+                n = { 'login':'SIGNUp',
+                    'value':5
+                }
+                c=a(n)
+                print('mail error')
+                return c
+            
+                
+
+            elif len(pass1) == 0:
+                messages.error(request,'please input password')
+                n = { 'login':'SIGNUp',
+                    'value':4
+                }
+                c=a(n)
+                print('mail error')
+                return c
+            
+            
+
+            
+            
+            
+            if number:
                 try:
-                    user = Accounts.objects.get(referal_code = referal)
-                    wallet = Wallet.objects.get(user=user)
-                    wallet.amount = wallet.amount+50
-                    wallet.save()
-                except : 
-                    messages.error(request,"user referal code doesn't exist")
+                    my_user =Accounts.objects.create_user(first_name,last_name,username,email, number, pass1)
+                    wallet = Wallet.objects.create(user = my_user)
+                
+                except Exception as e:
+                    print(e)
+
+                    messages.error(request,"number already exist")
                     n = { 'login':'SIGNUp',
-                    'value':7
-                        }
+                    'value':3
+                    }
                     c=a(n)
                     print('mail error')
                     return c
-            
-            print('user created')
-            my_user.is_active = False
-            my_user.save()
-            print(my_user.id)
-            cart = Cart.objects.create(user = my_user)
-            print('user created')
-            messages.success(request, "u succesfully created a user now verify the number")
-        
-            return redirect(verify_view)
-        
+                my_user.phone_number = number
+                request.session['pk'] = my_user.pk
+                account_sid = TWILLIO_ACCOUNT_SID 
+                auth_token = TWILLIO_AUTH_TOKEN 
+                client = Client(account_sid, auth_token)
 
-        
+                verification = client.verify \
+                        .services(TWILLIO_SERVICE_ID) \
+                        .verifications \
+                        .create(to= f"+91{number}", channel='sms')
 
-
-    else:
-        n = { 'login':'SIGNUp',
-                'value':0
-            }
-        c=a(n)
-        return c
+                print(verification.status)
     
+                if len(referal)>0:
+                    try:
+                        user = Accounts.objects.get(referal_code = referal)
+                        wallet = Wallet.objects.get(user=user)
+                        wallet.amount = wallet.amount+50
+                        wallet.save()
+                    except : 
+                        messages.error(request,"user referal code doesn't exist")
+                        n = { 'login':'SIGNUp',
+                        'value':7
+                            }
+                        c=a(n)
+                        print('mail error')
+                        return c
+                
+                print('user created')
+                my_user.is_active = False
+                my_user.save()
+                print(my_user.id)
+                cart = Cart.objects.create(user = my_user)
+                print('user created')
+                messages.success(request, "u succesfully created a user now verify the number")
+            
+                return redirect(verify_view)
+    
+        
+
+        
+
+
+        else:
+            n = { 'login':'SIGNUp',
+                    'value':0
+                }
+            c=a(n)
+            return c
+    else:
+        return redirect(first)
 
     
 @login_required(login_url=first)    
@@ -314,36 +318,38 @@ def product_details(request,id):
 
 
 def verify_view(request):
+    if not request.user.is_authenticated:
     
      
-    if request.method == 'POST':
-        id = request.session.get('pk')
-        print(id)
-    
-    
-        user = Accounts.objects.get(id = id)
-        number = user.phone_number
-        codes = request.POST.get('username')
-        account_sid = TWILLIO_ACCOUNT_SID
-        auth_token = TWILLIO_AUTH_TOKEN
-        client = Client(account_sid, auth_token)
+        if request.method == 'POST':
+            id = request.session.get('pk')
+            print(id)
+        
+        
+            user = Accounts.objects.get(id = id)
+            number = user.phone_number
+            codes = request.POST.get('username')
+            account_sid = TWILLIO_ACCOUNT_SID
+            auth_token = TWILLIO_AUTH_TOKEN
+            client = Client(account_sid, auth_token)
 
-        verification_check = client.verify \
-                            .services(TWILLIO_SERVICE_ID) \
-                            .verification_checks \
-                            .create(to=f"+91{number}", code=codes) 
+            verification_check = client.verify \
+                                .services(TWILLIO_SERVICE_ID) \
+                                .verification_checks \
+                                .create(to=f"+91{number}", code=codes) 
 
-        print('login')
-        if verification_check.status == 'approved':
-            user.is_active = True
-            user.save()
-            login(request,user)
-            return redirect(first)
-        else:
-            messages.error(request,'wrong code')
-            return redirect(verify_view)
-    return render(request,'otp_signup.html')
-
+            print('login')
+            if verification_check.status == 'approved':
+                user.is_active = True
+                user.save()
+                login(request,user)
+                return redirect(first)
+            else:
+                messages.error(request,'wrong code')
+                return redirect(verify_view)
+        return render(request,'otp_signup.html')
+    else:
+        return redirect(first)
 
 
 def buy_now_redirect(request):
@@ -969,56 +975,62 @@ def shop_search(request):
     
  
 
- 
+@cache_control(no_cache = True, must_revalidate = True, no_store = True)
 def login_otp(request):
-    if request.method == "POST":
-        number = request.POST.get('username')
-        try :
-            user = Accounts.objects.get(phone_number = number)
-        except: 
-            messages.error(request, "phone number doesn't exist")
-            return redirect(login_otp)
-        request.session['id'] = user.id
-        print(number) 
-        account_sid = TWILLIO_ACCOUNT_SID
-        auth_token = TWILLIO_AUTH_TOKEN
-        client = Client(account_sid, auth_token)
+    
+    if not request.user.is_authenticated:
+        if request.method == "POST":
+            number = request.POST.get('username')
+            try :
+                user = Accounts.objects.get(phone_number = number)
+            except: 
+                messages.error(request, "phone number doesn't exist")
+                return redirect(login_otp)
+            request.session['id'] = user.id
+            print(number) 
+            account_sid = TWILLIO_ACCOUNT_SID
+            auth_token = TWILLIO_AUTH_TOKEN
+            client = Client(account_sid, auth_token)
 
-        verification = client.verify \
-                     .services(TWILLIO_SERVICE_ID) \
-                     .verifications \
-                     .create(to= f"+91{number}", channel='sms')
+            verification = client.verify \
+                        .services(TWILLIO_SERVICE_ID) \
+                        .verifications \
+                        .create(to= f"+91{number}", channel='sms')
 
-        print(verification.status)
-        return redirect(otp_veify)
-    return render(request, 'otp_login.html')    
- 
-
+            print(verification.status)
+            return redirect(otp_veify)
+        return render(request, 'otp_login.html')    
+    else:
+        return redirect(first)
+    
+@cache_control(no_cache = True, must_revalidate = True, no_store = True)
 def otp_veify(request):
-    id = request.session.get('id')
-    print(id)
-    
-    
-    user = Accounts.objects.get(id = id)
-    number = user.phone_number
-    print(number)  
-    if request.method == 'POST':
-        codes = request.POST.get('username')
-        account_sid = TWILLIO_ACCOUNT_SID
-        auth_token = TWILLIO_AUTH_TOKEN
-        client = Client(account_sid, auth_token)
+    if not request.user.is_authenticated:
+        id = request.session.get('id')
+        print(id)
+        
+        
+        user = Accounts.objects.get(id = id)
+        number = user.phone_number
+        print(number)  
+        if request.method == 'POST':
+            codes = request.POST.get('username')
+            account_sid = TWILLIO_ACCOUNT_SID
+            auth_token = TWILLIO_AUTH_TOKEN
+            client = Client(account_sid, auth_token)
 
-        verification_check = client.verify \
-                            .services(TWILLIO_SERVICE_ID) \
-                            .verification_checks \
-                            .create(to=f"+91{number}", code=codes)
+            verification_check = client.verify \
+                                .services(TWILLIO_SERVICE_ID) \
+                                .verification_checks \
+                                .create(to=f"+91{number}", code=codes)
 
-        print('login')
-        if verification_check.status == 'approved':
-            login(request,user)
-            return redirect(first)
-    return render(request, 'verifi.html') 
-
+            print('login')
+            if verification_check.status == 'approved':
+                login(request,user)
+                return redirect(first)
+        return render(request, 'verifi.html') 
+    else:
+        return redirect(first)
 
 
 
