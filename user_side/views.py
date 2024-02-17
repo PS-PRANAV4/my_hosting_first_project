@@ -3,6 +3,8 @@ from distutils.log import error
 
 import json
 from profiles.views import user_address
+from .models import Otp
+from .send_email import send_email
 
 
 
@@ -28,6 +30,7 @@ import datetime
 from django.template.loader import render_to_string
 import os
 from coupon.models import Coupon
+from .generate_otp import generate_otp
 
 GTK_FOLDER = r'C:\Program Files\GTK3-Runtime Win64\bin'
 os.environ['PATH'] = GTK_FOLDER + os.pathsep + os.environ.get('PATH', '')
@@ -1060,4 +1063,47 @@ def pay_wallet(request,check):
     else:
         messages.error(request,'not enough amount in wallet')
         return redirect(purchase,check,user.id)
+
+
+
+def create_otp_using_email(request):
+    print('welcome')
+    if request.method == "POST":
+        email = request.POST.get('email')
+        user = Accounts.objects.get(email=email)
+        
+        otp = generate_otp()
+        try:
+            temp = Otp.objects.get(user=user)
+            temp.delete()
+        except:
+            pass
+        
+
+        Otp.objects.create(otp=str(otp),user=user)
+        send_email(otp,user.email)
+
+        return redirect(verify_otp_email)
+
+
+    return render(request,'otp_login_email.html')
+
+def verify_otp_email(request):
+    
+    if request.method == "POST":
+        
+        otp = request.POST.get("username")
+        print(otp)
+        try:
+            ot_ob = Otp.objects.get(otp=otp)
+            
+            user = Accounts.objects.get(id=ot_ob.user.id)
+            
+            login(request,user)
+            return redirect(first)
+
+        except:
+            return redirect(verify_otp_email)
+    return render(request,'email_verify.html')
+
 

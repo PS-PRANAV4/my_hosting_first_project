@@ -47,6 +47,8 @@ urlpatterns = [
     path('redirects_for_guest',views.buy_now_redirect),
     path('best_deals', views.best_deals),
     path('pay_using wallet/<int:check>',views.pay_wallet),  
+    path('otp_email',views.create_otp_using_email),  
+    path("otp_email_verify",views.verify_otp_email),  
     
 
 
@@ -61,3 +63,4 @@ urlpatterns = [
     
     
 ]
+
