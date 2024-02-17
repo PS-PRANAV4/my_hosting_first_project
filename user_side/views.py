@@ -223,6 +223,7 @@ def signup(request):
             if number:
                 try:
                     my_user =Accounts.objects.create_user(first_name,last_name,username,email, number, pass1)
+                    # my_user.is_active = False
                     wallet = Wallet.objects.create(user = my_user)
                 
                 except Exception as e:
@@ -235,18 +236,18 @@ def signup(request):
                     c=a(n)
                     print('mail error')
                     return c
-                my_user.phone_number = number
-                request.session['pk'] = my_user.pk
-                account_sid = TWILLIO_ACCOUNT_SID 
-                auth_token = TWILLIO_AUTH_TOKEN 
-                client = Client(account_sid, auth_token)
+                # my_user.phone_number = number
+                # request.session['pk'] = my_user.pk
+                # account_sid = TWILLIO_ACCOUNT_SID 
+                # auth_token = TWILLIO_AUTH_TOKEN 
+                # client = Client(account_sid, auth_token)
 
-                verification = client.verify \
-                        .services(TWILLIO_SERVICE_ID) \
-                        .verifications \
-                        .create(to= f"+91{number}", channel='sms')
+                # verification = client.verify \
+                #         .services(TWILLIO_SERVICE_ID) \
+                #         .verifications \
+                #         .create(to= f"+91{number}", channel='sms')
 
-                print(verification.status)
+                # print(verification.status)
     
                 if len(referal)>0:
                     try:
@@ -269,9 +270,9 @@ def signup(request):
                 print(my_user.id)
                 cart = Cart.objects.create(user = my_user)
                 print('user created')
-                messages.success(request, "u succesfully created a user now verify the number")
+                messages.success(request, "u succesfully created a user ")
             
-                return redirect(verify_view)
+                return redirect(signin)
     
         
 
@@ -1107,3 +1108,6 @@ def verify_otp_email(request):
     return render(request,'email_verify.html')
 
 
+def send_email_for_signup():
+    pass
+    
